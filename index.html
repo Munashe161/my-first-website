@@ -1,151 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First Website</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Urban Plate | Restaurant</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #0b0f19;
-            color: white;
-        }
+body {
+    font-family: Arial, sans-serif;
+    background: #10100e;
+    color: #fff;
+}
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 8%;
-            background: #111827;
-        }
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 8%;
+    background: #171714;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
 
-        .logo {
-            font-size: 25px;
-            font-weight: bold;
-            color: #38bdf8;
-        }
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: #d6a85c;
+    letter-spacing: 2px;
+}
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 25px;
-        }
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 22px;
+    font-size: 14px;
+}
 
-        .hero {
-            min-height: 85vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 30px;
-        }
+nav a:hover {
+    color: #d6a85c;
+}
 
-        .hero h1 {
-            font-size: clamp(38px, 7vw, 70px);
-            margin-bottom: 20px;
-        }
+.hero {
+    min-height: 80vh;
+    background:
+    linear-gradient(#0008, #0009),
+    url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600")
+    center/cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 30px;
+}
 
-        .hero span {
-            color: #38bdf8;
-        }
+.hero h1 {
+    font-size: clamp(42px, 7vw, 75px);
+    margin-bottom: 18px;
+}
 
-        .hero p {
-            color: #aab4c5;
-            font-size: 18px;
-            max-width: 550px;
-            line-height: 1.7;
-        }
+.hero h1 span {
+    color: #d6a85c;
+}
 
-        .btn {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 15px 30px;
-            background: #38bdf8;
-            color: #07111e;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-        }
+.hero p {
+    max-width: 550px;
+    line-height: 1.8;
+    color: #eee;
+}
 
-        .about {
-            padding: 70px 8%;
-            text-align: center;
-            background: #111827;
-        }
+.btn {
+    display: inline-block;
+    padding: 15px 28px;
+    background: #d6a85c;
+    color: #171714;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-top: 25px;
+}
 
-        .about h2 {
-            font-size: 32px;
-            margin-bottom: 20px;
-        }
+.section {
+    padding: 75px 8%;
+    text-align: center;
+}
 
-        .about p {
-            color: #aab4c5;
-            line-height: 1.8;
-        }
+.section h2 {
+    font-size: 36px;
+    margin-bottom: 15px;
+}
 
-        footer {
-            padding: 25px;
-            text-align: center;
-            color: #aab4c5;
-        }
+.gold {
+    color: #d6a85c;
+}
 
-        @media (max-width: 600px) {
-            header {
-                flex-direction: column;
-                gap: 18px;
-            }
+.intro {
+    color: #bbb;
+    line-height: 1.8;
+    max-width: 650px;
+    margin: auto;
+}
 
-            nav a {
-                margin: 0 8px;
-            }
-        }
-    </style>
+.menu {
+    background: #191916;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.food-card {
+    background: #24241f;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: left;
+}
+
+.food-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.food-card h3,
+.food-card p {
+    padding: 8px 16px;
+}
+
+.food-card p {
+    color: #bbb;
+    font-size: 14px;
+}
+
+.price {
+    color: #d6a85c !important;
+    font-weight: bold;
+    padding-bottom: 20px !important;
+}
+
+.reservation {
+    background: #191916;
+}
+
+.reservation form {
+    max-width: 500px;
+    margin: 30px auto 0;
+    display: grid;
+    gap: 15px;
+}
+
+input, select, textarea {
+    padding: 15px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background: #24241f;
+    color: white;
+    width: 100%;
+}
+
+button {
+    padding: 15px;
+    border: none;
+    background: #d6a85c;
+    color: #111;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #aaa;
+    background: #0a0a09;
+}
+
+@media(max-width: 600px) {
+    header {
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    nav a {
+        margin: 0 7px;
+    }
+}
+</style>
 </head>
 
 <body>
 
-    <header>
-        <div class="logo">MYWEBSITE.</div>
+<header>
+    <div class="logo">THE URBAN PLATE.</div>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#about">About</a>
+        <a href="#reserve">Reservations</a>
+    </nav>
+</header>
 
-        <nav>
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-        </nav>
-    </header>
+<section class="hero" id="home">
+    <h1>Good Food. <span>Great Moments.</span></h1>
+    <p>
+        Experience exceptional flavours, beautiful
+        dining and unforgettable moments at The Urban Plate.
+    </p>
+    <a href="#menu" class="btn">Explore Our Menu</a>
+</section>
 
-    <section class="hero" id="home">
-        <h1>Welcome to <span>My Website</span></h1>
+<section class="section" id="about">
+    <h2>Welcome to <span class="gold">Our Restaurant</span></h2>
+    <p class="intro">
+        We believe great food brings people together.
+        Discover freshly prepared meals, quality ingredients
+        and an atmosphere made for memorable experiences.
+    </p>
+</section>
 
-        <p>
-            We create amazing digital experiences.
-            Explore our world and discover what we can do for you.
-        </p>
+<section class="section menu" id="menu">
+    <h2>Our <span class="gold">Menu</span></h2>
+    <p class="intro">A taste of something extraordinary.</p>
 
-        <a href="#about" class="btn">Explore More</a>
-    </section>
+    <div class="menu-grid">
 
-    <section class="about" id="about">
-        <h2>About Us</h2>
+        <div class="food-card">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=700" alt="Beef burger">
+            <h3>Classic Beef Burger</h3>
+            <p>Juicy beef, fresh lettuce and signature sauce.</p>
+            <p class="price">$12.00</p>
+        </div>
 
-        <p>
-            Welcome to our website.
-            We believe in creativity, innovation
-            and delivering quality experiences.
-        </p>
-    </section>
+        <div class="food-card">
+            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=700" alt="Pizza">
+            <h3>Italian Pizza</h3>
+            <p>Freshly baked with cheese and premium toppings.</p>
+            <p class="price">$15.00</p>
+        </div>
 
-    <footer id="contact">
-        <p>© 2026 MyWebsite. All rights reserved.</p>
-    </footer>
+        <div class="food-card">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=700" alt="Fresh salad">
+            <h3>Fresh Garden Bowl</h3>
+            <p>A refreshing mix of vegetables and greens.</p>
+            <p class="price">$9.00</p>
+        </div>
+
+    </div>
+</section>
+
+<section class="section reservation" id="reserve">
+    <h2>Book a <span class="gold">Table</span></h2>
+    <p class="intro">Planning a special moment? Reserve your table.</p>
+
+    <form id="bookingForm">
+        <input type="text" id="customer" placeholder="Your full name" required>
+        <input type="tel" id="phone" placeholder="Phone number" required>
+        <input type="date" id="date" required>
+        <select id="guests" required>
+            <option value="">Number of guests</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+        </select>
+        <button type="submit">Request Reservation</button>
+    </form>
+</section>
+
+<footer>
+    <p>THE URBAN PLATE.</p>
+    <p>Good Food. Great Moments.</p>
+    <p>© 2026 The Urban Plate. All rights reserved.</p>
+</footer>
+
+<script>
+document.getElementById("bookingForm")
+.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const name = document.getElementById("customer").value;
+    const phone = document.getElementById("phone").value;
+    const date = document.getElementById("date").value;
+    const guests = document.getElementById("guests").value;
+
+    const message = `Hello! I would like to request a table reservation.
+Name: ${name}
+Phone: ${phone}
+Date: ${date}
+Guests: ${guests}`;
+
+    alert(message + "\n\nReservation request prepared! Please contact the restaurant to confirm.");
+});
+</script>
 
 </body>
 </html>
