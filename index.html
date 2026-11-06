@@ -37,10 +37,15 @@ header {
     letter-spacing: 2px;
 }
 
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
 nav a {
     color: white;
     text-decoration: none;
-    margin-left: 22px;
     font-size: 14px;
 }
 
@@ -167,6 +172,12 @@ input, select, textarea {
     background: #24241f;
     color: white;
     width: 100%;
+    font: inherit;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
 }
 
 button {
@@ -177,6 +188,19 @@ button {
     font-weight: bold;
     cursor: pointer;
     border-radius: 5px;
+    font-size: 15px;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#bookingStatus {
+    max-width: 500px;
+    margin: 18px auto 0;
+    line-height: 1.6;
+    font-size: 14px;
 }
 
 footer {
@@ -184,16 +208,39 @@ footer {
     padding: 30px;
     color: #aaa;
     background: #0a0a09;
+    line-height: 1.8;
 }
 
 @media(max-width: 600px) {
     header {
         flex-direction: column;
         gap: 18px;
+        padding: 20px 5%;
+    }
+
+    .logo {
+        font-size: 21px;
+    }
+
+    nav {
+        justify-content: center;
+        gap: 14px;
     }
 
     nav a {
-        margin: 0 7px;
+        font-size: 13px;
+    }
+
+    .section {
+        padding: 55px 6%;
+    }
+
+    .section h2 {
+        font-size: 29px;
+    }
+
+    .hero {
+        min-height: 70vh;
     }
 }
 </style>
@@ -261,23 +308,62 @@ footer {
 
 <section class="section reservation" id="reserve">
     <h2>Book a <span class="gold">Table</span></h2>
-    <p class="intro">Planning a special moment? Reserve your table.</p>
+    <p class="intro">
+        Planning a special moment? Request your table below.
+    </p>
 
     <form id="bookingForm">
-        <input type="text" id="customer" placeholder="Your full name" required>
-        <input type="tel" id="phone" placeholder="Phone number" required>
-        <input type="date" id="date" required>
+
+        <input
+            type="text"
+            id="customer"
+            placeholder="Your full name"
+            autocomplete="name"
+            required
+        >
+
+        <input
+            type="tel"
+            id="phone"
+            placeholder="Phone number"
+            autocomplete="tel"
+            required
+        >
+
+        <input
+            type="date"
+            id="date"
+            required
+        >
+
+        <input
+            type="time"
+            id="time"
+            required
+        >
+
         <select id="guests" required>
             <option value="">Number of guests</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-            <option>6</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
         </select>
-        <button type="submit">Request Reservation</button>
+
+        <textarea
+            id="requests"
+            placeholder="Special requests (optional)"
+        ></textarea>
+
+        <button type="submit" id="bookingButton">
+            Request Reservation
+        </button>
+
     </form>
+
+    <p id="bookingStatus" role="status" aria-live="polite"></p>
 </section>
 
 <footer>
@@ -286,23 +372,78 @@ footer {
     <p>© 2026 The Urban Plate. All rights reserved.</p>
 </footer>
 
+<!-- Supabase JavaScript library -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-document.getElementById("bookingForm")
-.addEventListener("submit", function(event) {
+const SUPABASE_URL = "https://oqqxttvppecegpiaeqhi.supabase.co";
+
+const SUPABASE_KEY = "sb_publishable_IbjiW28r9hWEiBBJJXvp_w_6AbycUDv";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+const bookingForm = document.getElementById("bookingForm");
+const bookingButton = document.getElementById("bookingButton");
+const bookingStatus = document.getElementById("bookingStatus");
+const dateInput = document.getElementById("date");
+
+// Prevent customers from selecting dates in the past.
+const today = new Date();
+const localToday = new Date(
+    today.getTime() - today.getTimezoneOffset() * 60000
+).toISOString().split("T")[0];
+
+dateInput.min = localToday;
+
+bookingForm.addEventListener("submit", async function(event) {
     event.preventDefault();
 
-    const name = document.getElementById("customer").value;
-    const phone = document.getElementById("phone").value;
-    const date = document.getElementById("date").value;
-    const guests = document.getElementById("guests").value;
+    bookingButton.disabled = true;
+    bookingButton.textContent = "Submitting...";
+    bookingStatus.textContent = "Sending your reservation request...";
+    bookingStatus.style.color = "#d6a85c";
 
-    const message = `Hello! I would like to request a table reservation.
-Name: ${name}
-Phone: ${phone}
-Date: ${date}
-Guests: ${guests}`;
+    const reservation = {
+        customer_name: document.getElementById("customer").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        booking_date: document.getElementById("date").value,
+        booking_time: document.getElementById("time").value,
+        guests: Number(document.getElementById("guests").value),
+        special_requests:
+            document.getElementById("requests").value.trim() || null
+    };
 
-    alert(message + "\n\nReservation request prepared! Please contact the restaurant to confirm.");
+    try {
+        const { error } = await supabaseClient
+            .from("reservations")
+            .insert([reservation]);
+
+        if (error) {
+            throw error;
+        }
+
+        bookingStatus.textContent =
+            "Success! Your reservation request has been received. The restaurant will contact you to confirm your booking.";
+
+        bookingStatus.style.color = "#7ee2a8";
+
+        bookingForm.reset();
+
+    } catch (error) {
+        console.error("Reservation error:", error);
+
+        bookingStatus.textContent =
+            "Sorry, we couldn't submit your reservation. Please try again or contact the restaurant.";
+
+        bookingStatus.style.color = "#ff8585";
+
+    } finally {
+        bookingButton.disabled = false;
+        bookingButton.textContent = "Request Reservation";
+    }
 });
 </script>
 
